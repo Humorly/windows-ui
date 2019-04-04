@@ -1,12 +1,12 @@
 
-// OwnerDrawWindowDlg.h : Í·ÎÄ¼ş
+// OwnerDrawWindowDlg.h : å¤´æ–‡ä»¶
 //
 
 #pragma once
 
 #include "ImageButton.h"
 
-// ×îĞ¡»¯¡¢×î´ó»¯¡¢»¹Ô­¡¢¹Ø±Õ°´Å¥
+// æœ€å°åŒ–ã€æœ€å¤§åŒ–ã€è¿˜åŸã€å…³é—­æŒ‰é’®
 #define		WIDGIT_BUTTON_NUM					4
 
 #define MINI_BTN_PATH_NOR			_T("img\\btn\\btn_min_normal.png")
@@ -30,30 +30,31 @@
 #define MAX_RESTORE_BTN_ID			10002
 #define QUIT_BTN_ID					10003
 
-// COwnerDrawWindowDlg ¶Ô»°¿ò
+// COwnerDrawWindowDlg å¯¹è¯æ¡†
 class COwnerDrawWindowDlg : public CDialogEx
 {
 	DECLARE_DYNAMIC(COwnerDrawWindowDlg)
-// ¹¹Ôì
+// æ„é€ 
 public:
-	COwnerDrawWindowDlg(UINT nIDTemplate, CWnd* pParent = NULL);			// ±ê×¼¹¹Ôìº¯Êı
+	COwnerDrawWindowDlg(UINT nIDTemplate, CWnd* pParent = NULL);			// æ ‡å‡†æ„é€ å‡½æ•°
+	virtual ~COwnerDrawWindowDlg();
 
 	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV Ö§³Ö
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV æ”¯æŒ
 
-// ÊµÏÖ
+// å®ç°
 protected:
 	HICON m_hIcon;
 
-	// ´´½¨¼¸¸öBUTTON
+	// åˆ›å»ºå‡ ä¸ªBUTTON
 	CImageButton * m_pWidgitBtn[WIDGIT_BUTTON_NUM];
 
 	int InitImageButton();
 
-	// »æÖÆ´°Ìå
+	// ç»˜åˆ¶çª—ä½“
 	void DrawWindow();
 
-	// Éú³ÉµÄÏûÏ¢Ó³Éäº¯Êı
+	// ç”Ÿæˆçš„æ¶ˆæ¯æ˜ å°„å‡½æ•°
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();
