@@ -2,7 +2,7 @@
 // OwnerDrawWindowDlg.cpp : 实现文件
 //
 
-#include "pch.h"
+#include "stdafx.h"
 #include "OwnerDrawWindowDlg.h"
 #include "afxdialogex.h"
 
