@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "BtnST.h"
+#include "CButtonST.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -217,7 +217,7 @@ const char* CButtonST::GetVersionC()
   return "2.6";
 } // End of GetVersionC
 
-// ÉèÖÃ¸ßÁÁ
+// è®¾ç½®é«˜äº®
 void CButtonST::SetHighLight(BOOL bState)
 {
 	m_bHightLight = bState;
@@ -347,8 +347,8 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 
   pDC->SetBkMode(TRANSPARENT);
 
-  // ×¼±¸×ÖÌå
-  HFONT ft = CreateFont((itemRect.bottom - itemRect.top) * 4 / 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _T("ËÎÌå"));
+  // å‡†å¤‡å­—ä½“
+  HFONT ft = CreateFont((itemRect.bottom - itemRect.top) * 4 / 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _T("å®‹ä½“"));
   HFONT hOldFont = (HFONT)SelectObject(pDC->m_hDC, ft);
 
   //if (m_bIsFlat == FALSE)
@@ -378,7 +378,7 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
   {
 	  bgColor = GetInactiveBgColor();
 
-	  // ¸ßÁÁ
+	  // é«˜äº®
 	  if (m_bHightLight)
 	  {
 		  bgColor = RGB(0, 149, 135);
@@ -578,7 +578,7 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 		pDC->SetTextColor(OWNER_COLOR_GRAY_BTN);
 	}
 
-	// È¥µô±ä»Ò
+	// åŽ»æŽ‰å˜ç°
 	pDC->DrawState(captionRect.TopLeft(), captionRect.Size(), (LPCTSTR)sTitle, (DSS_NORMAL),
 		TRUE, 0, (CBrush*)NULL);
 
@@ -598,7 +598,7 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
     }
   }
 
-  //// ¸ßÁÁ
+  //// é«˜äº®
   //if (m_bHightLight)
   //{
 	 // CBrush bh(RGB(86, 190, 166));
