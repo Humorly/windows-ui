@@ -2,7 +2,7 @@
 // OwnerDrawWindowDlg.cpp : 实现文件
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "OwnerDrawWindowDlg.h"
 #include "afxdialogex.h"
 
@@ -56,13 +56,6 @@ BOOL COwnerDrawWindowDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	// 将“关于...”菜单项添加到系统菜单中。
-	CMenu* pSysMenu = GetSystemMenu(FALSE);
-	if (pSysMenu != NULL)
-	{
-
-	}
-
 	// 设置此对话框的图标。  当应用程序主窗口不是对话框时，框架将自动
 	//  执行此操作
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
@@ -75,7 +68,6 @@ BOOL COwnerDrawWindowDlg::OnInitDialog()
 	SetWindowLong(m_hWnd, GWL_EXSTYLE, WS_EX_RIGHT);
 
 	InitImageButton();
-
 	Invalidate();
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
