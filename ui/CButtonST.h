@@ -31,7 +31,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CButtonST window
 
-// »æÖÆÑÕÉ«
+// Â»Ã¦Ã–Ã†Ã‘Ã•Ã‰Â«
 //#define OWNER_COLOR_BACKGROUND_BTN			RGB(73, 73, 76)
 //#define OWNER_COLOR_HIGHLIGHT_BTN			RGB(251, 251, 255)
 //#define OWNER_COLOR_GRAY_BTN				RGB(140, 140, 145)
