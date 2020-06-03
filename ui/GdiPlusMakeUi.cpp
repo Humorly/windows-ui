@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "GdiPlusMakeUi.h"
 
 GdiplusStartupInput gdiplusStartupInputUi;
@@ -15,14 +15,21 @@ CGdiPlusMakeUi::~CGdiPlusMakeUi()
 
 }
 
-// GDI+³õÊ¼»¯
+// GDI+åˆå§‹åŒ–
 void CGdiPlusMakeUi::CGdiPlusMakeUiInit()
 {
-	// GDI¶ÔÏó³õÊ¼»¯
-	GdiplusStartup(&gdiplusTokenUi, &gdiplusStartupInputUi, NULL);
+	// åˆå§‹æ ‡è¯†
+	static bool bInitFlag = false;
+	// åªåˆå§‹åŒ–ä¸€æ¬¡
+	if (!bInitFlag)
+	{
+		bInitFlag = true;
+		// GDIå¯¹è±¡åˆå§‹åŒ–
+		GdiplusStartup(&gdiplusTokenUi, &gdiplusStartupInputUi, NULL);
+	}
 }
 
-// »æÖÆ±ßÔµÏß¿ò
+// ç»˜åˆ¶è¾¹ç¼˜çº¿æ¡†
 void DrawWindowRectUi(HDC & hdc, CRect rt)
 {
 	CPen pen(PS_SOLID, 1, RGB(0, 139, 160));
