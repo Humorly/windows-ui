@@ -1,6 +1,5 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "OwnerDrawRadioButton.h"
-
 
 COwnerDrawRadioButton::COwnerDrawRadioButton()
 {

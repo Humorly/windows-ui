@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "OwnerDrawTabList.h"
 
 //#include "..//GameSet//GameSet//RuleSetDlg2.h"

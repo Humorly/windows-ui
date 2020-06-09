@@ -1,60 +1,61 @@
 
-// OwnerDrawWindowDlg.h : å¤´æ–‡ä»¶
+// OwnerDrawWindowDlg.h : Í·ÎÄ¼ş
 //
 
 #pragma once
 
+#include "TransparentMake.h"
 #include "ImageButton.h"
 
-// æœ€å°åŒ–ã€æœ€å¤§åŒ–ã€è¿˜åŸã€å…³é—­æŒ‰é’®
+// ×îĞ¡»¯¡¢×î´ó»¯¡¢»¹Ô­¡¢¹Ø±Õ°´Å¥
 #define		WIDGIT_BUTTON_NUM					4
 
-#define MINI_BTN_PATH_NOR			_T("img\\btn\\btn_min_normal.png")
-#define MINI_BTN_PATH_HOVER			_T("img\\btn\\btn_min_hover.png")
-#define MINI_BTN_PATH_DOWN			_T("img\\btn\\btn_min_down.png")
+#define MINI_BTN_PATH_NOR			_T("img\\btn\\min.png")
+#define MINI_BTN_PATH_HOVER			_T("img\\btn\\min_h.png")
+#define MINI_BTN_PATH_DOWN			_T("img\\btn\\min_d.png")
 										
-#define MAX_BTN_PATH_NOR			_T("img\\btn\\btn_max_normal.png")
-#define MAX_BTN_PATH_HOVER			_T("img\\btn\\btn_max_hover.png")
-#define MAX_BTN_PATH_DOWN			_T("img\\btn\\btn_max_down.png")
+#define MAX_BTN_PATH_NOR			_T("img\\btn\\max.png")
+#define MAX_BTN_PATH_HOVER			_T("img\\btn\\max_h.png")
+#define MAX_BTN_PATH_DOWN			_T("img\\btn\\max_d.png")
 										
-#define RESTORE_BTN_PATH_NOR		_T("img\\btn\\btn_max_restore_normal.png")
-#define RESTORE_BTN_PATH_HOVER		_T("img\\btn\\btn_max_restore_hover.png")
-#define RESTORE_BTN_PATH_DOWN		_T("img\\btn\\btn_max_restore_down.png")
+#define RESTORE_BTN_PATH_NOR		_T("img\\btn\\restore.png")
+#define RESTORE_BTN_PATH_HOVER		_T("img\\btn\\restore_h.png")
+#define RESTORE_BTN_PATH_DOWN		_T("img\\btn\\restore_d.png")
 										
-#define QUIT_BTN_PATH_NOR			_T("img\\btn\\btn_quit_normal.png")
-#define QUIT_BTN_PATH_HOVER			_T("img\\btn\\btn_quit_hover.png")
-#define QUIT_BTN_PATH_DOWN			_T("img\\btn\\btn_quit_down.png")
+#define QUIT_BTN_PATH_NOR			_T("img\\btn\\close.png")
+#define QUIT_BTN_PATH_HOVER			_T("img\\btn\\close_h.png")
+#define QUIT_BTN_PATH_DOWN			_T("img\\btn\\close_d.png")
 
 #define MINI_BTN_ID					10000
 #define MAX_BTN_ID					10001
 #define MAX_RESTORE_BTN_ID			10002
 #define QUIT_BTN_ID					10003
 
-// COwnerDrawWindowDlg å¯¹è¯æ¡†
+// COwnerDrawWindowDlg ¶Ô»°¿ò
 class COwnerDrawWindowDlg : public CDialogEx
 {
 	DECLARE_DYNAMIC(COwnerDrawWindowDlg)
-// æ„é€ 
+// ¹¹Ôì
 public:
-	COwnerDrawWindowDlg(UINT nIDTemplate, CWnd* pParent = NULL);			// æ ‡å‡†æ„é€ å‡½æ•°
+	COwnerDrawWindowDlg(UINT nIDTemplate, CWnd* pParent = NULL);			// ±ê×¼¹¹Ôìº¯Êı
 	virtual ~COwnerDrawWindowDlg();
 
 	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV æ”¯æŒ
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV Ö§³Ö
 
-// å®ç°
+// ÊµÏÖ
 protected:
 	HICON m_hIcon;
 
-	// åˆ›å»ºå‡ ä¸ªBUTTON
+	// ´´½¨¼¸¸öBUTTON
 	CImageButton * m_pWidgitBtn[WIDGIT_BUTTON_NUM];
 
 	int InitImageButton();
 
-	// ç»˜åˆ¶çª—ä½“
-	void DrawWindow();
+	// »æÖÆ´°Ìå
+	void DrawOwnerWindow();
 
-	// ç”Ÿæˆçš„æ¶ˆæ¯æ˜ å°„å‡½æ•°
+	// Éú³ÉµÄÏûÏ¢Ó³Éäº¯Êı
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "OwnerDrawCombox.h"
 
 COwnerDrawCombox::COwnerDrawCombox()
@@ -58,9 +58,9 @@ void COwnerDrawCombox::OnPaint()
 
 		// 绘制下拉三角形
 		CPoint pt[3] = { 
-			CPoint(rc.right - 13, rc.top + 10), 
+			CPoint(rc.right - 13, rc.top + 9), 
 			CPoint(rc.right - 10, rc.bottom - 10), 
-			CPoint(rc.right - 7, rc.top + 10) };
+			CPoint(rc.right - 7, rc.top + 9) };
 		
 		CBrush bsh(OWNER_COLOR_HIGHLIGHT);
 		CBrush* pOldBrush = dc.SelectObject(&bsh);
@@ -125,13 +125,7 @@ void COwnerDrawCombox::PreSubclassWindow()
 }
 
 
-void COwnerDrawCombox::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
-{
-	//lpMeasureItemStruct->itemHeight = 30;
-
-	// TODO:  在此添加消息处理程序代码和/或调用默认值
-	//CComboBox::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
-}
+void COwnerDrawCombox::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct) {}
 
 
 int COwnerDrawCombox::OnCompareItem(int nIDCtl, LPCOMPAREITEMSTRUCT lpCompareItemStruct)
