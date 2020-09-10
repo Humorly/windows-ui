@@ -47,6 +47,7 @@ BEGIN_MESSAGE_MAP(COwnerDrawWindowDlg, CDialogEx)
 	ON_WM_DRAWITEM()
 	ON_WM_MEASUREITEM()
 	ON_WM_ERASEBKGND()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 
@@ -205,6 +206,32 @@ int COwnerDrawWindowDlg::InitImageButton()
 	return 0;
 }
 
+// 刷新控件
+void COwnerDrawWindowDlg::RefreshWidget()
+{
+	RECT rect;
+	GetClientRect(&rect);
+
+	CString str[] = { _T("_"), _T("u"), _T("U"), _T("*") };
+
+	int nId = MINI_BTN_ID;
+	// 创建按钮
+	for (int i = 0; i < WIDGIT_BUTTON_NUM; i++)
+	{
+		GetClientRect(&rect);
+		rect.left = rect.right - WINDOW_BTN_WIDTH * (WIDGIT_BUTTON_NUM - 1 - ((i >= 2 ? (i - 1) : i))) - 4;
+		rect.right = rect.left + WINDOW_BTN_WIDTH;
+		rect.top = 3;
+		rect.bottom = rect.top + WINDOW_BTN_HEIGHT;
+
+		if (NULL != m_pWidgitBtn[i]->m_hWnd)
+		{
+			m_pWidgitBtn[i]->MoveWindow(&rect, true);
+		}
+	}
+
+	Invalidate();
+}
 
 void COwnerDrawWindowDlg::OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp)
 {
@@ -375,6 +402,13 @@ LRESULT COwnerDrawWindowDlg::CalcWindowHitWhere()
 		}
 	}
 	return HTCLIENT;
+}
+
+// 窗体变更
+void COwnerDrawWindowDlg::OnSize(UINT nType, int cx, int cy)
+{
+	// 刷新控件位置
+	RefreshWidget();
 }
 
 //  拼接完整路径
