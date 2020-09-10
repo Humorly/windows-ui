@@ -1,5 +1,5 @@
 
-// OwnerDrawWindowDlg.cpp : ÊµÏÖÎÄ¼ş
+// OwnerDrawWindowDlg.cpp : å®ç°æ–‡ä»¶
 //
 
 #include "pch.h"
@@ -10,10 +10,10 @@
 #define new DEBUG_NEW
 #endif
 
-//  Æ´½ÓÍêÕûÂ·¾¶
+//  æ‹¼æ¥å®Œæ•´è·¯å¾„
 CString SplicFullFilePath(CString strExeModuleName);
 
-// COwnerDrawWindowDlg ¶Ô»°¿ò
+// COwnerDrawWindowDlg å¯¹è¯æ¡†
 
 IMPLEMENT_DYNAMIC(COwnerDrawWindowDlg, CDialogEx)
 
@@ -21,7 +21,7 @@ COwnerDrawWindowDlg::COwnerDrawWindowDlg(UINT nIDTemplate, CWnd* pParent /*=NULL
 	: CDialogEx(nIDTemplate, pParent)
 {
 
-	// ´´½¨ËÄ¸ö°´Å¥
+	// åˆ›å»ºå››ä¸ªæŒ‰é’®
 	for (int i = 0; i < WIDGIT_BUTTON_NUM; i++)
 	{
 		m_pWidgitBtn[i] = new CImageButton();
@@ -50,18 +50,18 @@ BEGIN_MESSAGE_MAP(COwnerDrawWindowDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// COwnerDrawWindowDlg ÏûÏ¢´¦Àí³ÌĞò
+// COwnerDrawWindowDlg æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 BOOL COwnerDrawWindowDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	// ÉèÖÃ´Ë¶Ô»°¿òµÄÍ¼±ê¡£  µ±Ó¦ÓÃ³ÌĞòÖ÷´°¿Ú²»ÊÇ¶Ô»°¿òÊ±£¬¿ò¼Ü½«×Ô¶¯
-	//  Ö´ĞĞ´Ë²Ù×÷
-	SetIcon(m_hIcon, TRUE);			// ÉèÖÃ´óÍ¼±ê
-	SetIcon(m_hIcon, FALSE);		// ÉèÖÃĞ¡Í¼±ê
+	// è®¾ç½®æ­¤å¯¹è¯æ¡†çš„å›¾æ ‡ã€‚  å½“åº”ç”¨ç¨‹åºä¸»çª—å£ä¸æ˜¯å¯¹è¯æ¡†æ—¶ï¼Œæ¡†æ¶å°†è‡ªåŠ¨
+	//  æ‰§è¡Œæ­¤æ“ä½œ
+	SetIcon(m_hIcon, TRUE);			// è®¾ç½®å¤§å›¾æ ‡
+	SetIcon(m_hIcon, FALSE);		// è®¾ç½®å°å›¾æ ‡
 
-	// ³õÊ¼GDI+
+	// åˆå§‹GDI+
 	CGdiPlusMakeUi::CGdiPlusMakeUiInit();
 	ModifyStyleEx(WS_EX_CLIENTEDGE, 0, 0);
 	ModifyStyle(WS_TILEDWINDOW, 0, 0);
@@ -73,7 +73,7 @@ BOOL COwnerDrawWindowDlg::OnInitDialog()
 	ModifyStyleEx(0, WS_EX_LAYERED);
 	SetLayeredWindowAttributes(RGB(0, 0, 0), 240, LWA_ALPHA);
 
-	return TRUE;  // ³ı·Ç½«½¹µãÉèÖÃµ½¿Ø¼ş£¬·ñÔò·µ»Ø TRUE
+	return TRUE;  // é™¤éå°†ç„¦ç‚¹è®¾ç½®åˆ°æ§ä»¶ï¼Œå¦åˆ™è¿”å› TRUE
 }
 
 void COwnerDrawWindowDlg::OnSysCommand(UINT nID, LPARAM lParam)
@@ -81,19 +81,19 @@ void COwnerDrawWindowDlg::OnSysCommand(UINT nID, LPARAM lParam)
 	CDialogEx::OnSysCommand(nID, lParam);
 }
 
-// Èç¹ûÏò¶Ô»°¿òÌí¼Ó×îĞ¡»¯°´Å¥£¬ÔòĞèÒªÏÂÃæµÄ´úÂë
-//  À´»æÖÆ¸ÃÍ¼±ê¡£  ¶ÔÓÚÊ¹ÓÃÎÄµµ/ÊÓÍ¼Ä£ĞÍµÄ MFC Ó¦ÓÃ³ÌĞò£¬
-//  Õâ½«ÓÉ¿ò¼Ü×Ô¶¯Íê³É¡£
+// å¦‚æœå‘å¯¹è¯æ¡†æ·»åŠ æœ€å°åŒ–æŒ‰é’®ï¼Œåˆ™éœ€è¦ä¸‹é¢çš„ä»£ç 
+//  æ¥ç»˜åˆ¶è¯¥å›¾æ ‡ã€‚  å¯¹äºä½¿ç”¨æ–‡æ¡£/è§†å›¾æ¨¡å‹çš„ MFC åº”ç”¨ç¨‹åºï¼Œ
+//  è¿™å°†ç”±æ¡†æ¶è‡ªåŠ¨å®Œæˆã€‚
 
 void COwnerDrawWindowDlg::OnPaint()
 {
 	if (IsIconic())
 	{
-		CPaintDC dc(this); // ÓÃÓÚ»æÖÆµÄÉè±¸ÉÏÏÂÎÄ
+		CPaintDC dc(this); // ç”¨äºç»˜åˆ¶çš„è®¾å¤‡ä¸Šä¸‹æ–‡
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
-		// Ê¹Í¼±êÔÚ¹¤×÷Çø¾ØĞÎÖĞ¾ÓÖĞ
+		// ä½¿å›¾æ ‡åœ¨å·¥ä½œåŒºçŸ©å½¢ä¸­å±…ä¸­
 		int cxIcon = GetSystemMetrics(SM_CXICON);
 		int cyIcon = GetSystemMetrics(SM_CYICON);
 		CRect rect;
@@ -101,7 +101,7 @@ void COwnerDrawWindowDlg::OnPaint()
 		int x = (rect.Width() - cxIcon + 1) / 2;
 		int y = (rect.Height() - cyIcon + 1) / 2;
 
-		// »æÖÆÍ¼±ê
+		// ç»˜åˆ¶å›¾æ ‡
 		dc.DrawIcon(x, y, m_hIcon);
 	}
 	else
@@ -111,8 +111,8 @@ void COwnerDrawWindowDlg::OnPaint()
 	}
 }
 
-//µ±ÓÃ»§ÍÏ¶¯×îĞ¡»¯´°¿ÚÊ±ÏµÍ³µ÷ÓÃ´Ëº¯ÊıÈ¡µÃ¹â±ê
-//ÏÔÊ¾¡£
+//å½“ç”¨æˆ·æ‹–åŠ¨æœ€å°åŒ–çª—å£æ—¶ç³»ç»Ÿè°ƒç”¨æ­¤å‡½æ•°å–å¾—å…‰æ ‡
+//æ˜¾ç¤ºã€‚
 HCURSOR COwnerDrawWindowDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
@@ -120,32 +120,37 @@ HCURSOR COwnerDrawWindowDlg::OnQueryDragIcon()
 
 BOOL COwnerDrawWindowDlg::PreTranslateMessage(MSG* pMsg)
 {
-	// TODO:  ÔÚ´ËÌí¼Ó×¨ÓÃ´úÂëºÍ/»òµ÷ÓÃ»ùÀà
+	// TODO:  åœ¨æ­¤æ·»åŠ ä¸“ç”¨ä»£ç å’Œ/æˆ–è°ƒç”¨åŸºç±»
 
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
-// ÎŞĞ§
+// æ— æ•ˆ
 BOOL COwnerDrawWindowDlg::PreCreateWindow(CREATESTRUCT& cs)
 {
 	return CDialogEx::PreCreateWindow(cs);
 }
 
-
+// æœ€å¤§åŒ–
 void COwnerDrawWindowDlg::OnBnClickedMax()
 {
-	//ShowWindow(SW_SHOWMAXIMIZED);
+	ShowWindow(SW_SHOWMAXIMIZED);
+	m_pWidgitBtn[1]->ShowWindow(false);
+	m_pWidgitBtn[2]->ShowWindow(true);
 }
 
+// è¿˜åŸ
 void COwnerDrawWindowDlg::OnBnClickedRestore()
 {
 	ShowWindow(SW_RESTORE);
+	m_pWidgitBtn[1]->ShowWindow(true);
+	m_pWidgitBtn[2]->ShowWindow(false);
 }
 
 void COwnerDrawWindowDlg::OnBnClickedQuit()
 {
 	//CDialogEx::OnClose();
-	// ·¢ËÍ¹Ø±ÕÏûÏ¢¸ø¼Ì³Ğ´°Ìå
+	// å‘é€å…³é—­æ¶ˆæ¯ç»™ç»§æ‰¿çª—ä½“
 	SendMessage(WM_CLOSE, 0, 0);
 }
 
@@ -157,7 +162,7 @@ void COwnerDrawWindowDlg::OnBnClickedMini()
 #define WINDOW_BTN_WIDTH			48
 #define WINDOW_BTN_HEIGHT			32
 
-// ³õÊ¼°´Å¥
+// åˆå§‹æŒ‰é’®
 int COwnerDrawWindowDlg::InitImageButton()
 {
 	m_pWidgitBtn[0]->SetButtonImage(SplicFullFilePath(MINI_BTN_PATH_NOR), SplicFullFilePath(MINI_BTN_PATH_HOVER), SplicFullFilePath(MINI_BTN_PATH_DOWN));
@@ -171,7 +176,7 @@ int COwnerDrawWindowDlg::InitImageButton()
 	CString str[] = { _T("_"), _T("u"), _T("U"), _T("*") };
 
 	int nId = MINI_BTN_ID;
-	// ´´½¨°´Å¥
+	// åˆ›å»ºæŒ‰é’®
 	for (int i = 0; i < WIDGIT_BUTTON_NUM; i++)
 	{
 		GetClientRect(&rect);
@@ -203,12 +208,12 @@ int COwnerDrawWindowDlg::InitImageButton()
 
 void COwnerDrawWindowDlg::OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp)
 {
-	// TODO:  ÔÚ´ËÌí¼ÓÏûÏ¢´¦Àí³ÌĞò´úÂëºÍ/»òµ÷ÓÃÄ¬ÈÏÖµ
+	// TODO:  åœ¨æ­¤æ·»åŠ æ¶ˆæ¯å¤„ç†ç¨‹åºä»£ç å’Œ/æˆ–è°ƒç”¨é»˜è®¤å€¼
 
 	CDialogEx::OnNcCalcSize(bCalcValidRects, lpncsp);
 }
 
-// »æÖÆ´°Ìå
+// ç»˜åˆ¶çª—ä½“
 void COwnerDrawWindowDlg::DrawOwnerWindow()
 {
 	CDC * dc = GetDC();
@@ -221,8 +226,8 @@ void COwnerDrawWindowDlg::DrawOwnerWindow()
 	DrawWindowRectUi(dc->m_hDC, rt);
 
 	rt = CRect(14, 8, 184, 36);
-	// ×¼±¸×ÖÌå
-	HFONT ft = CreateFont((rt.bottom - rt.top) * 4 / 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _T("ËÎÌå"));
+	// å‡†å¤‡å­—ä½“
+	HFONT ft = CreateFont((rt.bottom - rt.top) * 4 / 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _T("å®‹ä½“"));
 	HFONT hOldFont = (HFONT)dc->SelectObject(ft);
 
 	CString str;
@@ -232,9 +237,9 @@ void COwnerDrawWindowDlg::DrawOwnerWindow()
 	ReleaseDC(dc);
 	DeleteObject(ft);
 
-	//// ²éÕÒ¿Ø¼ş²¢Ë¢ĞÂÖ®
+	//// æŸ¥æ‰¾æ§ä»¶å¹¶åˆ·æ–°ä¹‹
 	//HWND hWndChild = ::GetWindow(m_hWnd, GW_CHILD);
-	//// ±éÀú½çÃæ¿Ø¼ş²¢Ë¢ĞÂÖ®
+	//// éå†ç•Œé¢æ§ä»¶å¹¶åˆ·æ–°ä¹‹
 	//while (hWndChild)
 	//{
 	//	CWnd* pw = CWnd::FromHandle(hWndChild);
@@ -245,16 +250,16 @@ void COwnerDrawWindowDlg::DrawOwnerWindow()
 	//}
 }
 
-// ÇøÓòÉè¶¨
+// åŒºåŸŸè®¾å®š
 LRESULT COwnerDrawWindowDlg::OnNcHitTest(CPoint point)
 {
-	// »ñÈ¡½á¹û
+	// è·å–ç»“æœ
 	LRESULT lResult = CalcWindowHitWhere();
-	// ÖØĞÂ¼ÆËãÎ»ÖÃ
-	if (HTCAPTION == lResult/* || HTTOPLEFT == lResult || HTLEFT == lResult || HTBOTTOMLEFT == lResult || HTBOTTOM
+	// é‡æ–°è®¡ç®—ä½ç½®
+	if (HTCAPTION == lResult || HTTOPLEFT == lResult || HTLEFT == lResult || HTBOTTOMLEFT == lResult || HTBOTTOM
 		||
 		HTBOTTOMRIGHT == lResult || HTRIGHT == lResult || HTTOPRIGHT || HTTOP == lResult
-		*/)
+		)
 	{
 		return lResult;
 	}
@@ -372,11 +377,11 @@ LRESULT COwnerDrawWindowDlg::CalcWindowHitWhere()
 	return HTCLIENT;
 }
 
-//  Æ´½ÓÍêÕûÂ·¾¶
+//  æ‹¼æ¥å®Œæ•´è·¯å¾„
 CString SplicFullFilePath(CString strExeModuleName)
 {
-	// ÌáÈ¡µ±Ç°Â·¾¶
-	// ×¼±¸Ğ´ÎÄ¼ş
+	// æå–å½“å‰è·¯å¾„
+	// å‡†å¤‡å†™æ–‡ä»¶
 	WCHAR strPath[MAX_PATH + 1] = { 0 };
 	WCHAR * pTempPath;
 	GetModuleFileName(NULL, strPath, MAX_PATH);
@@ -411,10 +416,10 @@ BOOL COwnerDrawWindowDlg::OnEraseBkgnd(CDC* pDC)
 	return CDialogEx::OnEraseBkgnd(pDC);
 }
 
-// ½áÊøÊ±ÇåÀí¶ÔÓ¦ÄÚ´æ
+// ç»“æŸæ—¶æ¸…ç†å¯¹åº”å†…å­˜
 COwnerDrawWindowDlg::~COwnerDrawWindowDlg()
 {
-	// ÊÍ·Å°´Å¥
+	// é‡Šæ”¾æŒ‰é’®
 	for (auto & btn : m_pWidgitBtn)
 	{
 		if (NULL != btn)
