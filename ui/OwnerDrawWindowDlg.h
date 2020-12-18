@@ -1,5 +1,5 @@
 
-// OwnerDrawWindowDlg.h : å¤´æ–‡ä»¶
+// OwnerDrawWindowDlg.h : Í·ÎÄ¼ş
 //
 
 #pragma once
@@ -7,7 +7,9 @@
 #include "TransparentMake.h"
 #include "ImageButton.h"
 
-// æœ€å°åŒ–ã€æœ€å¤§åŒ–ã€è¿˜åŸã€å…³é—­æŒ‰é’®
+#include <memory>
+
+// ×îĞ¡»¯¡¢×î´ó»¯¡¢»¹Ô­¡¢¹Ø±Õ°´Å¥
 #define		WIDGIT_BUTTON_NUM					4
 
 #define MINI_BTN_PATH_NOR			_T("img\\btn\\min.png")
@@ -26,39 +28,45 @@
 #define QUIT_BTN_PATH_HOVER			_T("img\\btn\\close_h.png")
 #define QUIT_BTN_PATH_DOWN			_T("img\\btn\\close_d.png")
 
+#define WINDOW_BACKGROUND			_T("img\\window\\back.png")
+
 #define MINI_BTN_ID					10000
 #define MAX_BTN_ID					10001
 #define MAX_RESTORE_BTN_ID			10002
 #define QUIT_BTN_ID					10003
 
-// COwnerDrawWindowDlg å¯¹è¯æ¡†
+// COwnerDrawWindowDlg ¶Ô»°¿ò
 class COwnerDrawWindowDlg : public CDialogEx
 {
 	DECLARE_DYNAMIC(COwnerDrawWindowDlg)
-// æ„é€ 
+// ¹¹Ôì
 public:
-	COwnerDrawWindowDlg(UINT nIDTemplate, CWnd* pParent = NULL);			// æ ‡å‡†æ„é€ å‡½æ•°
+	COwnerDrawWindowDlg(UINT nIDTemplate, CWnd* pParent = NULL);			// ±ê×¼¹¹Ôìº¯Êı
 	virtual ~COwnerDrawWindowDlg();
 
 	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV æ”¯æŒ
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV Ö§³Ö
 
-// å®ç°
+// ÊµÏÖ
 protected:
 	HICON m_hIcon;
 
-	// åˆ›å»ºå‡ ä¸ªBUTTON
-	CImageButton * m_pWidgitBtn[WIDGIT_BUTTON_NUM];
+	// ´´½¨¼¸¸öBUTTON
+	std::shared_ptr<CImageButton> m_pWidgitBtn[WIDGIT_BUTTON_NUM];
+	// ±³¾°Í¼Æ¬
+	std::shared_ptr<Image> m_pBackgroundImage;
+	// ×ÀÃæ×î´ó»¯Î»ÖÃ
+	CRect m_rcRestoreArea;
 
-	// åˆå§‹æŒ‰é’®
+	// ³õÊ¼°´Å¥
 	int InitImageButton();
-	// æ›´æ–°æ§ä»¶ä½ç½®
+	// ¸üĞÂ¿Ø¼şÎ»ÖÃ
 	void RefreshWidget();
 
-	// ç»˜åˆ¶çª—ä½“
+	// »æÖÆ´°Ìå
 	void DrawOwnerWindow();
 
-	// ç”Ÿæˆçš„æ¶ˆæ¯æ˜ å°„å‡½æ•°
+	// Éú³ÉµÄÏûÏ¢Ó³Éäº¯Êı
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();
@@ -71,7 +79,6 @@ public:
 	afx_msg void OnBnClickedMax();
 	afx_msg void OnBnClickedRestore();
 	afx_msg void OnBnClickedQuit();
-	afx_msg void OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp);
 	afx_msg LRESULT OnNcHitTest(CPoint point);
 	LRESULT CalcWindowHitWhere();
 
