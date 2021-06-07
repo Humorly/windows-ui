@@ -14,6 +14,7 @@ BEGIN_MESSAGE_MAP(COwnerDrawCombox, CComboBox)
 	ON_WM_DRAWITEM()
 	ON_WM_MEASUREITEM()
 	ON_WM_COMPAREITEM()
+	ON_WM_CTLCOLOR_REFLECT()
 END_MESSAGE_MAP()
 
 void COwnerDrawCombox::OnPaint()
@@ -168,3 +169,10 @@ void COwnerDrawCombox::OnSysColorChange()
 	m_dcBk.DeleteDC();
 	m_bmpBk.DeleteObject();
 } // End of OnSysColorChange
+
+
+HBRUSH COwnerDrawCombox::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
+{
+	pDC->SetBkMode(TRANSPARENT);   //设置透明属性
+	return (HBRUSH)GetStockObject(NULL_BRUSH);   //返回空画刷
+}

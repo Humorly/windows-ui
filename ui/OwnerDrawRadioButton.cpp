@@ -20,6 +20,9 @@ void COwnerDrawRadioButton::OnPaint()
 	CRect rt;
 	GetClientRect(&rt);
 
+	dc.SetBkMode(TRANSPARENT);
+	dc.SetBkColor(TRANSPARENT);
+
 	// œ»ªÊ÷∆±≥æ∞
 	CBrush bhh(RGB(240, 240, 240));
 	dc.FillRect(&rt, &bhh);
@@ -54,8 +57,6 @@ void COwnerDrawRadioButton::OnPaint()
 
 		dc.SelectObject(bh);
 		dc.Ellipse(&rm);
-
-
 		//dc.FrameRect(&rm, &bshb);
 	}
 	else

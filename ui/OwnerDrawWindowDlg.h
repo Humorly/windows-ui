@@ -30,6 +30,11 @@
 
 #define WINDOW_BACKGROUND			_T("img\\window\\back.png")
 
+
+#define PNG_TEST1					_T("img\\btn\\test1.png")
+#define PNG_TEST2					_T("img\\btn\\test2.png")
+#define PNG_TEST3					_T("img\\btn\\test3.png")
+
 #define MINI_BTN_ID					10000
 #define MAX_BTN_ID					10001
 #define MAX_RESTORE_BTN_ID			10002
@@ -44,7 +49,7 @@ public:
 	COwnerDrawWindowDlg(UINT nIDTemplate, CWnd* pParent = NULL);			// 标准构造函数
 	virtual ~COwnerDrawWindowDlg();
 
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
 
 // 实现
@@ -60,9 +65,6 @@ protected:
 
 	// 初始按钮
 	int InitImageButton();
-	// 更新控件位置
-	void RefreshWidget();
-
 	// 绘制窗体
 	void DrawOwnerWindow();
 
@@ -86,4 +88,10 @@ public:
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+
+	// 更新控件位置
+	void RefreshWidget();
+
+	//  拼接完整路径
+	CString SplicFullFilePath(CString strExeModuleName);
 };

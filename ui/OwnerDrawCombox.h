@@ -33,5 +33,6 @@ public:
 	CDC m_dcBk;
 	CBitmap m_bmpBk;
 	CBitmap* m_pbmpOldBk;
+	afx_msg HBRUSH CtlColor(CDC* /*pDC*/, UINT /*nCtlColor*/);
 };
 

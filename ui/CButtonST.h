@@ -160,6 +160,8 @@ private:
     COLORREF  m_crInactiveFg;
     COLORREF  m_crActiveBg;
     COLORREF  m_crActiveFg;
+public:
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };
 
 

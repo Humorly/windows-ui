@@ -80,6 +80,7 @@ BEGIN_MESSAGE_MAP(CButtonST, CButton)
 	ON_WM_CTLCOLOR_REFLECT()
 	ON_WM_SYSCOLORCHANGE()
 	//}}AFX_MSG_MAP
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 
@@ -396,8 +397,6 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 		itemRectss.right -= 1;
 		itemRectss.bottom -= 1;
 		//pDC->RoundRect(&itemRectss, &br);
-
-		
 		pDC->SetBkColor(TRANSPARENT);
 
 		CBrush brrr;
@@ -406,7 +405,7 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 
 		CPen pn(PS_SOLID, 1, RGB(140, 140, 140));
 		pDC->SelectObject(pn);
-		RoundRect(pDC->m_hDC, itemRect.left, itemRect.top, itemRect.right, itemRect.bottom, 4, 4);
+		RoundRect(pDC->m_hDC, itemRect.left, itemRect.top, itemRect.right, itemRect.bottom, 20, 20);
 
 		//CBrush brw(RGB(240, 240, 240));
 		//pDC->SelectObject(brw);
@@ -684,6 +683,13 @@ void CButtonST::PreSubclassWindow()
 
 	nBS = GetButtonStyle();
 
+	auto style = GetWindowLong(m_hWnd, GWL_EXSTYLE);
+	if (style & WS_EX_TRANSPARENT)
+	{
+		int a = 0;
+		a++;
+	}
+
 	// Check if this is the default button
 	if (nBS & BS_DEFPUSHBUTTON) m_bIsDefault = TRUE;
 
@@ -940,3 +946,11 @@ void CButtonST::OnSysColorChange()
 
 #undef ST_USE_MEMDC
 #undef ST_LIKEIE
+
+
+BOOL CButtonST::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	return false;
+}

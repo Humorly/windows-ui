@@ -25,4 +25,6 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
 	afx_msg void OnCaptureChanged(CWnd *pWnd);
+	afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+	virtual void PreSubclassWindow();
 };

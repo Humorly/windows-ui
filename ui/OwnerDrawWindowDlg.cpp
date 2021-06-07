@@ -10,11 +10,6 @@
 //#define new DEBUG_NEW
 //#endif
 
-//  拼接完整路径
-CString SplicFullFilePath(CString strExeModuleName);
-
-// COwnerDrawWindowDlg 对话框
-
 IMPLEMENT_DYNAMIC(COwnerDrawWindowDlg, CDialogEx)
 
 COwnerDrawWindowDlg::COwnerDrawWindowDlg(UINT nIDTemplate, CWnd* pParent /*=NULL*/)
@@ -62,17 +57,18 @@ BOOL COwnerDrawWindowDlg::OnInitDialog()
 
 	// 初始GDI+
 	CGdiPlusMakeUi::CGdiPlusMakeUiInit();
-	ModifyStyleEx(WS_EX_CLIENTEDGE, 0, 0);
+	//ModifyStyleEx(WS_EX_CLIENTEDGE, 0, 0);
 	ModifyStyle(WS_TILEDWINDOW, 0, 0);
 	SetWindowLong(m_hWnd, GWL_EXSTYLE, WS_EX_RIGHT);
+	//::SetWindowLong(m_hWnd, GWL_STYLE, GetWindowLong(m_hWnd, GWL_STYLE) | WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
 
 	m_pBackgroundImage.reset(new Image(SplicFullFilePath(WINDOW_BACKGROUND)));
 
 	InitImageButton();
-	Invalidate();
-
 	ModifyStyleEx(0, WS_EX_LAYERED);
 	SetLayeredWindowAttributes(RGB(0, 0, 0), 240, LWA_ALPHA);
+
+	RefreshWidget();
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -88,28 +84,8 @@ void COwnerDrawWindowDlg::OnSysCommand(UINT nID, LPARAM lParam)
 
 void COwnerDrawWindowDlg::OnPaint()
 {
-	if (IsIconic())
-	{
-		CPaintDC dc(this); // 用于绘制的设备上下文
-
-		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
-
-		// 使图标在工作区矩形中居中
-		int cxIcon = GetSystemMetrics(SM_CXICON);
-		int cyIcon = GetSystemMetrics(SM_CYICON);
-		CRect rect;
-		GetClientRect(&rect);
-		int x = (rect.Width() - cxIcon + 1) / 2;
-		int y = (rect.Height() - cyIcon + 1) / 2;
-
-		// 绘制图标
-		dc.DrawIcon(x, y, m_hIcon);
-	}
-	else
-	{
-		CDialogEx::OnPaint();
-		DrawOwnerWindow();
-	}
+	DrawOwnerWindow();
+	CDialogEx::OnPaint();
 }
 
 //当用户拖动最小化窗口时系统调用此函数取得光标
@@ -201,7 +177,7 @@ int COwnerDrawWindowDlg::InitImageButton()
 		rect.top = 1;
 		rect.bottom = rect.top + WINDOW_BTN_HEIGHT;
 
-		m_pWidgitBtn[i]->Create(str[i], WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_OWNERDRAW | WS_CLIPCHILDREN, rect, this, nId + i);
+		m_pWidgitBtn[i]->Create(str[i], WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, rect, this, nId + i);
 		m_pWidgitBtn[i]->ShowWindow(SW_SHOW);
 
 		if (NULL != m_pWidgitBtn[2]->m_hWnd)
@@ -226,17 +202,16 @@ void COwnerDrawWindowDlg::RefreshWidget()
 {
 	RECT rect;
 	GetClientRect(&rect);
-
-	CString str[] = { _T("_"), _T("u"), _T("U"), _T("*") };
+	CString str[] = { _T(" "), _T(" "), _T(" "), _T(" ") };
 
 	int nId = MINI_BTN_ID;
 	// 创建按钮
 	for (int i = 0; i < WIDGIT_BUTTON_NUM; i++)
 	{
 		GetClientRect(&rect);
-		rect.left = rect.right - WINDOW_BTN_WIDTH * (WIDGIT_BUTTON_NUM - 1 - ((i >= 2 ? (i - 1) : i))) - 4;
+		rect.left = rect.right - WINDOW_BTN_WIDTH * (WIDGIT_BUTTON_NUM - 1 - ((i >= 2 ? (i - 1) : i))) - 1;
 		rect.right = rect.left + WINDOW_BTN_WIDTH;
-		rect.top = 3;
+		rect.top = 1;
 		rect.bottom = rect.top + WINDOW_BTN_HEIGHT;
 
 		if (NULL != m_pWidgitBtn[i])
@@ -247,34 +222,47 @@ void COwnerDrawWindowDlg::RefreshWidget()
 
 	Invalidate();
 
-	// 查找控件并刷新之
-	HWND hWndChild = ::GetWindow(m_hWnd, GW_CHILD);
-	// 遍历界面控件并刷新之
-	while (hWndChild)
-	{
-		CWnd* pw = CWnd::FromHandle(hWndChild);
-		int pid = pw->GetDlgCtrlID();
-		if (pw != NULL && pw->IsWindowVisible())
-			pw->Invalidate();
-		hWndChild = ::GetWindow(hWndChild, GW_HWNDNEXT);
-	}
+	//// 查找控件并刷新之
+	//HWND hWndChild = ::GetWindow(m_hWnd, GW_CHILD);
+	//// 遍历界面控件并刷新之
+	//while (hWndChild)
+	//{
+	//	CWnd* pw = CWnd::FromHandle(hWndChild);
+	//	int pid = pw->GetDlgCtrlID();
+	//	if (pw != NULL)
+	//	{
+	//		CRect rect1;
+	//		pw->GetWindowRect(rect1);
+	//		ScreenToClient(rect1);
+	//		pw->ShowWindow(SW_SHOW);
+	//	}
+	//	hWndChild = ::GetWindow(hWndChild, GW_HWNDNEXT);
+	//}
 }
 
 // 绘制窗体
 void COwnerDrawWindowDlg::DrawOwnerWindow()
 {
 	CDC * dc = GetDC();
+	dc->SetBkColor(TRANSPARENT);
 	dc->SetBkMode(TRANSPARENT);
 
 	HDC hMemDC;
 	HBITMAP	lBitmap;
 	RECT rc;
 	GetClientRect(&rc);
-	// 双缓冲拿一套
+	//FillRect(dc->GetSafeHdc(), &rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
+	
+	// 构建缓存画布
 	hMemDC = CreateCompatibleDC(dc->m_hDC);
 	lBitmap = CreateCompatibleBitmap(dc->m_hDC, rc.right, rc.bottom);
-	SelectObject(hMemDC, lBitmap);
+	HBITMAP hPrevBitmap = (HBITMAP)SelectObject(hMemDC, lBitmap);
 	SetBkMode(hMemDC, TRANSPARENT);
+	SetBkColor(hMemDC, TRANSPARENT);
+
+
+	FillRect(hMemDC, &rc, (HBRUSH)GetStockObject(WHITE_BRUSH));
+
 	// GDI对象关联设备对象
 	Graphics* pImageGraphics;
 	pImageGraphics = Graphics::FromHDC(hMemDC);
@@ -285,32 +273,31 @@ void COwnerDrawWindowDlg::DrawOwnerWindow()
 	if (m_pBackgroundImage)
 		pImageGraphics->DrawImage(m_pBackgroundImage.get(), rRect, 0, 0, static_cast<Gdiplus::REAL>(m_pBackgroundImage->GetWidth()), static_cast<Gdiplus::REAL>(m_pBackgroundImage->GetHeight()), UnitPixel);
 
-	// 拷贝画布
-	//BitBlt(dc->m_hDC, 0, 0, rc.right, rc.bottom, hMemDC, 0, 0, SRCCOPY);
-
 	CRect rt;
-	CBrush bh(RGB(240, 240, 240));
-
-	GetClientRect(&rt);
-	DrawWindowRectUi(dc->m_hDC, rt);
-
 	rt = CRect(14, 8, 184, 36);
 	// 准备字体
-	HFONT ft = CreateFont((rt.bottom - rt.top) * 4 / 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _T("宋体"));
-	HFONT hOldFont = (HFONT)dc->SelectObject(ft);
+	HFONT ft = CreateFont((rt.bottom - rt.top) * 3 / 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _T("微软雅黑"));
+	HFONT hOldFont = (HFONT)SelectObject(hMemDC, ft);
 
 	CString str;
 	GetWindowText(str);
-	DrawText(dc->m_hDC, str, str.GetLength(), rt, DT_LEFT | DT_VCENTER);
+	DrawText(hMemDC, str, str.GetLength(), rt, DT_LEFT | DT_VCENTER);
+
+	GetClientRect(&rt);
+	DrawWindowRectUi(hMemDC, rt);
+
+	// 拷贝画布
+	BitBlt(dc->m_hDC, 0, 0, rc.right, rc.bottom, hMemDC, 0, 0, SRCCOPY);
 
 	// 删除对象
-	DeleteDC(hMemDC);
-	SelectObject(hMemDC, lBitmap);
+	SelectObject(hMemDC, hOldFont);
+	SelectObject(hMemDC, hPrevBitmap);
 	DeleteObject(lBitmap);
 	delete pImageGraphics;
 
 	ReleaseDC(dc);
 	DeleteObject(ft);
+	DeleteDC(hMemDC);
 }
 
 // 区域设定
@@ -346,7 +333,6 @@ LRESULT COwnerDrawWindowDlg::CalcWindowHitWhere()
 	{
 		return HTCAPTION;
 	}
-
 
 	if (MovePoint.x >= 0
 		&& MovePoint.x <= 5
@@ -462,7 +448,7 @@ void COwnerDrawWindowDlg::OnSize(UINT nType, int cx, int cy)
 }
 
 //  拼接完整路径
-CString SplicFullFilePath(CString strExeModuleName)
+CString COwnerDrawWindowDlg::SplicFullFilePath(CString strExeModuleName)
 {
 	// 提取当前路径
 	// 准备写文件
@@ -497,7 +483,7 @@ void COwnerDrawWindowDlg::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasur
 
 BOOL COwnerDrawWindowDlg::OnEraseBkgnd(CDC* pDC)
 {
-	return CDialogEx::OnEraseBkgnd(pDC);
+	return false;
 }
 
 // 结束时清理对应内存

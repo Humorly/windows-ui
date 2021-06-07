@@ -32,7 +32,7 @@ void CGdiPlusMakeUi::CGdiPlusMakeUiInit()
 // »æÖÆ±ßÔµÏß¿ò
 void DrawWindowRectUi(HDC & hdc, CRect rt)
 {
-	CPen pen(PS_SOLID, 1, RGB(0, 139, 160));
+	CPen pen(PS_SOLID, 1, RGB(0, 122, 204));
 	SelectObject(hdc, pen);
 	MoveToEx(hdc, rt.left, rt.top, NULL);
 	LineTo(hdc, rt.left, rt.bottom - 1);
@@ -43,5 +43,5 @@ void DrawWindowRectUi(HDC & hdc, CRect rt)
 	CRect rm = rt;
 	rm.top = rm.bottom - 1;
 	CBrush bhs(RGB(0, 139, 160));
-	FillRect(hdc, rm, bhs);
+	//FillRect(hdc, rm, bhs);
 }

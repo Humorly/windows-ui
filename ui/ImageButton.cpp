@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "ImageButton.h"
 
+#include "OwnerDrawWindowDlg.h"
+
 CImageButton::CImageButton()
 {
-	m_hBackBrush = CreateSolidBrush(RGB(240, 240, 240));
+	m_hBackBrush = CreateSolidBrush(RGB(55, 55, 55));
 }
 
 // 设置图片路径
@@ -47,26 +49,33 @@ void CImageButton::DrawButton(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	BOOL bIsFocused = (lpDrawItemStruct->itemState & ODS_HOTLIGHT);
 	BOOL bIsDisabled = (lpDrawItemStruct->itemState & ODS_DISABLED);
 
-	CDC * pdc = CDC::FromHandle(lpDrawItemStruct->hDC);
-	HDC hdc = pdc->GetSafeHdc();
+	CDC* pdc = CDC::FromHandle(lpDrawItemStruct->hDC);
+
+	RECT rc;
+	GetClientRect(&rc);
+	SetBkMode(pdc->m_hDC, TRANSPARENT);
+	SetBkColor(pdc->m_hDC, TRANSPARENT);
+	//RoundRect(pdc->m_hDC, 0, 0, rc.right, rc.bottom, 20, 20);
 
 	HDC hMemDC;
 	HBITMAP	lBitmap;
-	RECT rc;
-	GetClientRect(&rc);
+
 	// 双缓冲拿一套
-	hMemDC = CreateCompatibleDC(hdc);
-	lBitmap = CreateCompatibleBitmap(hdc, rc.right, rc.bottom);
+	hMemDC = CreateCompatibleDC(pdc->m_hDC);
+	lBitmap = CreateCompatibleBitmap(pdc->m_hDC, rc.right, rc.bottom);
 	SelectObject(hMemDC, lBitmap);
-	FillRect(hMemDC, &rc, m_hBackBrush);
+
 	SetBkMode(hMemDC, TRANSPARENT);
+	SetBkColor(hMemDC, TRANSPARENT);
+
 	// GDI对象关联设备对象
 	Graphics * pImageGraphics;
-	pImageGraphics = Graphics::FromHDC(hMemDC);
+	pImageGraphics = Graphics::FromHDC(pdc->m_hDC);
 	VERIFY(pImageGraphics);
 
 	// 根据状态绘制图片
-	RectF rRect(static_cast<Gdiplus::REAL>(rc.left), static_cast<Gdiplus::REAL>(rc.top), static_cast<Gdiplus::REAL>(rc.right - rc.left), static_cast<Gdiplus::REAL>(rc.bottom - rc.top));
+	RectF rRect(static_cast<Gdiplus::REAL>(rc.left), static_cast<Gdiplus::REAL>(rc.top), 
+		static_cast<Gdiplus::REAL>(rc.right - rc.left), static_cast<Gdiplus::REAL>(rc.bottom - rc.top));
 
 	// 绘制
 	Image * pShowImage = NULL;
@@ -87,9 +96,8 @@ void CImageButton::DrawButton(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	}
 	VERIFY(pShowImage);
 	pImageGraphics->DrawImage(pShowImage, rRect, 0, 0, static_cast<Gdiplus::REAL>(pShowImage->GetWidth()), static_cast<Gdiplus::REAL>(pShowImage->GetHeight()), UnitPixel);
-
 	// 拷贝画布
-	BitBlt(hdc, 0, 0, rc.right, rc.bottom, hMemDC, 0, 0, SRCCOPY);
+	//BitBlt(pdc->m_hDC, 0, 0, rc.right, rc.bottom, hMemDC, 0, 0, SRCCOPY);
 	// 删除对象
 	DeleteDC(hMemDC);
 	SelectObject(hMemDC, lBitmap);
@@ -102,6 +110,7 @@ BEGIN_MESSAGE_MAP(CImageButton, CButton)
 ON_WM_MOUSEMOVE()
 ON_WM_KILLFOCUS()
 ON_WM_CAPTURECHANGED()
+ON_WM_CTLCOLOR_REFLECT()
 END_MESSAGE_MAP()
 
 
@@ -139,6 +148,7 @@ void CImageButton::OnMouseMove(UINT nFlags, CPoint point)
 			{
 				m_MouseOnButton = FALSE;
 				Invalidate();
+				(reinterpret_cast<COwnerDrawWindowDlg *>(GetParent()))->RefreshWidget();
 			}
 			if (!(nFlags & MK_LBUTTON)) ReleaseCapture();
 		}
@@ -166,4 +176,17 @@ void CImageButton::OnCaptureChanged(CWnd *pWnd)
 		Invalidate();
 	}
 	CButton::OnCaptureChanged(pWnd);
+}
+
+HBRUSH CImageButton::CtlColor(CDC* pDC, UINT nCtlColor)
+{
+	return (HBRUSH)::GetStockObject(NULL_BRUSH);
+}
+
+void CImageButton::PreSubclassWindow()
+{
+	//::SetWindowLong(m_hWnd, GWL_EXSTYLE, GetWindowLong(m_hWnd, GWL_EXSTYLE) | WS_EX_TRANSPARENT);
+	::SetWindowLong(m_hWnd, GWL_STYLE, GetWindowLong(m_hWnd, GWL_STYLE) | WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
+
+	CButton::PreSubclassWindow();
 }
