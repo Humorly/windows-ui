@@ -218,7 +218,7 @@ const char* CButtonST::GetVersionC()
   return "2.6";
 } // End of GetVersionC
 
-// è®¾ç½®é«˜äº®
+// ÉèÖÃ¸ßÁÁ
 void CButtonST::SetHighLight(BOOL bState)
 {
 	m_bHightLight = bState;
@@ -348,8 +348,8 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 
   pDC->SetBkMode(TRANSPARENT);
 
-  // å‡†å¤‡å­—ä½“
-  HFONT ft = CreateFont((itemRect.bottom - itemRect.top) * 4 / 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _T("å®‹ä½“"));
+  // ×¼±¸×ÖÌå
+  HFONT ft = CreateFont((itemRect.bottom - itemRect.top) * 4 / 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, _T("ËÎÌå"));
   HFONT hOldFont = (HFONT)SelectObject(pDC->m_hDC, ft);
 
   //if (m_bIsFlat == FALSE)
@@ -379,7 +379,7 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
   {
 	  bgColor = GetInactiveBgColor();
 
-	  // é«˜äº®
+	  // ¸ßÁÁ
 	  if (m_bHightLight)
 	  {
 		  bgColor = RGB(0, 149, 135);
@@ -577,7 +577,7 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 		pDC->SetTextColor(OWNER_COLOR_GRAY_BTN);
 	}
 
-	// åŽ»æŽ‰å˜ç°
+	// È¥µô±ä»Ò
 	pDC->DrawState(captionRect.TopLeft(), captionRect.Size(), (LPCTSTR)sTitle, (DSS_NORMAL),
 		TRUE, 0, (CBrush*)NULL);
 
@@ -597,7 +597,7 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
     }
   }
 
-  //// é«˜äº®
+  //// ¸ßÁÁ
   //if (m_bHightLight)
   //{
 	 // CBrush bh(RGB(86, 190, 166));
@@ -950,7 +950,7 @@ void CButtonST::OnSysColorChange()
 
 BOOL CButtonST::OnEraseBkgnd(CDC* pDC)
 {
-	// TODO: åœ¨æ­¤æ·»åŠ æ¶ˆæ¯å¤„ç†ç¨‹åºä»£ç å’Œ/æˆ–è°ƒç”¨é»˜è®¤å€¼
+	// TODO: ÔÚ´ËÌí¼ÓÏûÏ¢´¦Àí³ÌÐò´úÂëºÍ/»òµ÷ÓÃÄ¬ÈÏÖµ
 
 	return false;
 }

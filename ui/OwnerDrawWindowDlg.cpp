@@ -20,6 +20,8 @@ COwnerDrawWindowDlg::COwnerDrawWindowDlg(UINT nIDTemplate, CWnd* pParent /*=NULL
 	{
 		m_pWidgitBtn[i] = nullptr;
 	}
+	htcaption_flag_ = false;
+	clinet_hit_flag_ = false;
 }
 
 void COwnerDrawWindowDlg::DoDataExchange(CDataExchange* pDX)
@@ -41,6 +43,12 @@ BEGIN_MESSAGE_MAP(COwnerDrawWindowDlg, CDialogEx)
 	ON_WM_MEASUREITEM()
 	ON_WM_ERASEBKGND()
 	ON_WM_SIZE()
+	ON_WM_NCLBUTTONDBLCLK()
+	ON_WM_NCLBUTTONDOWN()
+	ON_WM_NCLBUTTONUP()
+	ON_WM_MOUSEMOVE()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONUP()
 END_MESSAGE_MAP()
 
 
@@ -325,16 +333,21 @@ LRESULT COwnerDrawWindowDlg::CalcWindowHitWhere()
 	GetCursorPos(&MovePoint);
 	ScreenToClient(&MovePoint);
 
+	bool zoomed_ = m_pWidgitBtn[2]->IsWindowVisible();
+
 	if (MovePoint.x >= 5
 		&& MovePoint.x <= ClientRect.right - 5
 		&& MovePoint.y >= 0
 		&& MovePoint.y <= TITLEBAR_HEIGHT
 		)
 	{
-		return HTCAPTION;
+		if (nullptr != m_pWidgitBtn[2] && m_pWidgitBtn[2]->IsWindowVisible())
+			return HTCLIENT;
+		else
+			return HTCAPTION;	
 	}
 
-	if (MovePoint.x >= 0
+	if (!zoomed_ && MovePoint.x >= 0
 		&& MovePoint.x <= 5
 
 		&& MovePoint.y >= 0
@@ -343,16 +356,16 @@ LRESULT COwnerDrawWindowDlg::CalcWindowHitWhere()
 	{
 		return HTTOPLEFT;
 	}
-	if (MovePoint.x >= 0
+	if (!zoomed_ && MovePoint.x >= 0
 		&& MovePoint.x <= 5
 		&& MovePoint.y >= 5
-		&& MovePoint.y <= ClientRect.bottom - 5
+		&& MovePoint.y <= ClientRect.bottom - 5 
 		)
 	{
 		return HTLEFT;
 	}
 
-	if (MovePoint.x >= 0
+	if (!zoomed_ && MovePoint.x >= 0
 		&& MovePoint.x <= 5
 
 		&& MovePoint.y >= ClientRect.bottom - 5
@@ -362,7 +375,7 @@ LRESULT COwnerDrawWindowDlg::CalcWindowHitWhere()
 		return HTBOTTOMLEFT;
 	}
 
-	if (MovePoint.x >= 5
+	if (!zoomed_ && MovePoint.x >= 5
 		&& MovePoint.x <= ClientRect.right - 5
 
 		&& MovePoint.y >= ClientRect.bottom - 5
@@ -372,7 +385,7 @@ LRESULT COwnerDrawWindowDlg::CalcWindowHitWhere()
 		return HTBOTTOM;
 	}
 
-	if (MovePoint.x >= ClientRect.right - 5
+	if (!zoomed_ && MovePoint.x >= ClientRect.right - 5
 		&& MovePoint.x <= ClientRect.right
 
 		&& MovePoint.y >= ClientRect.bottom - 5
@@ -383,7 +396,7 @@ LRESULT COwnerDrawWindowDlg::CalcWindowHitWhere()
 	}
 
 
-	if (MovePoint.x >= ClientRect.right - 5
+	if (!zoomed_ && MovePoint.x >= ClientRect.right - 5
 		&& MovePoint.x <= ClientRect.right
 
 		&& MovePoint.y >= 5
@@ -403,7 +416,7 @@ LRESULT COwnerDrawWindowDlg::CalcWindowHitWhere()
 		return HTTOPRIGHT;
 	}
 
-	if (MovePoint.x >= 5
+	if (!zoomed_ && MovePoint.x >= 5
 		&& MovePoint.x <= ClientRect.right - 5
 
 		&& MovePoint.y >= 0
@@ -490,3 +503,110 @@ BOOL COwnerDrawWindowDlg::OnEraseBkgnd(CDC* pDC)
 COwnerDrawWindowDlg::~COwnerDrawWindowDlg()
 {
 }
+
+// 标题栏按下
+void COwnerDrawWindowDlg::OnNcLButtonDown(UINT nHitTest, CPoint point)
+{
+	htcaption_flag_ = true;
+	CDialogEx::OnNcLButtonDown(nHitTest, point);
+}
+
+void COwnerDrawWindowDlg::OnNcLButtonUp(UINT nHitTest, CPoint point)
+{
+	htcaption_flag_ = false;
+	CDialogEx::OnNcLButtonUp(nHitTest, point);
+}
+
+void COwnerDrawWindowDlg::OnNcLButtonDblClk(UINT nHitTest, CPoint point)
+{
+	htcaption_flag_ = false;
+	if (!m_pWidgitBtn[2]->IsWindowVisible())
+	{
+		// 保存位置
+		GetWindowRect(&m_rcRestoreArea);
+
+		CRect rcWorkArea;
+		// 获取工作区
+		SystemParametersInfo(SPI_GETWORKAREA, 0, &rcWorkArea, 0);
+		MoveWindow(&rcWorkArea);
+
+		m_pWidgitBtn[1]->ShowWindow(false);
+		m_pWidgitBtn[2]->ShowWindow(true);
+	}
+	else
+	{
+		//ShowWindow(SW_RESTORE);
+		MoveWindow(&m_rcRestoreArea);
+		m_pWidgitBtn[1]->ShowWindow(true);
+		m_pWidgitBtn[2]->ShowWindow(false);
+	}
+
+	CDialogEx::OnNcLButtonDblClk(nHitTest, point);
+}
+
+void COwnerDrawWindowDlg::OnMouseMove(UINT nFlags, CPoint point)
+{
+	//// 还原窗体
+	//if (clinet_hit_flag_ && nullptr != m_pWidgitBtn[2] && m_pWidgitBtn[2]->IsWindowVisible())
+	//{
+	//	OutputDebugString(TEXT("restore"));
+
+	//	// 获取鼠标在窗体中的高度
+	//	RECT ClientRect;
+	//	GetClientRect(&ClientRect);
+	//	POINT MovePoint, NowPoint;
+	//	GetCursorPos(&MovePoint);
+	//	GetCursorPos(&NowPoint);
+	//	ScreenToClient(&MovePoint);
+
+	//	// 根据高度调整
+	//	auto width_ = m_rcRestoreArea.Width();
+	//	auto height_ = m_rcRestoreArea.Height();
+
+	//	m_rcRestoreArea.left = NowPoint.x - width_ / 2;
+	//	m_rcRestoreArea.top = NowPoint.y - MovePoint.y;
+	//	m_rcRestoreArea.right = m_rcRestoreArea.left + width_;
+	//	m_rcRestoreArea.bottom = m_rcRestoreArea.top + height_;
+
+	//	m_pWidgitBtn[1]->ShowWindow(true);
+	//	m_pWidgitBtn[2]->ShowWindow(false);
+
+	//	MoveWindow(&m_rcRestoreArea);
+	//}
+	//// 移动窗体
+	//if (clinet_hit_flag_)
+	//{
+	//	// 获取鼠标在窗体中的高度
+	//	CRect WindowRect;
+	//	GetWindowRect(&WindowRect);
+	//	// 根据高度调整
+	//	auto width_ = WindowRect.Width();
+	//	auto height_ = WindowRect.Height();
+
+	//	WindowRect.left += point.x - now_mouse_point_.x;
+	//	WindowRect.top += point.y - now_mouse_point_.y;
+	//	WindowRect.right = WindowRect.left + width_;
+	//	WindowRect.bottom = WindowRect.top + height_;
+
+	//	now_mouse_point_ = point;
+
+	//	MoveWindow(&WindowRect);
+	//}
+
+	//CDialogEx::OnMouseMove(nFlags, point);
+}
+
+// 右键按下
+void COwnerDrawWindowDlg::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	now_mouse_point_ = point;
+	clinet_hit_flag_ = true;
+	CDialogEx::OnLButtonDown(nFlags, point);
+}
+
+void COwnerDrawWindowDlg::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	clinet_hit_flag_ = false;
+	CDialogEx::OnLButtonUp(nFlags, point);
+}
+

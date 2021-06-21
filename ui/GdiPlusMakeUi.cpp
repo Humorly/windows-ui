@@ -25,7 +25,11 @@ void CGdiPlusMakeUi::CGdiPlusMakeUiInit()
 	{
 		bInitFlag = true;
 		// GDI对象初始化
-		GdiplusStartup(&gdiplusTokenUi, &gdiplusStartupInputUi, NULL);
+		auto status_ = GdiplusStartup(&gdiplusTokenUi, &gdiplusStartupInputUi, NULL);
+		if (0 == status_)
+		{
+			int a = 0;
+		}
 	}
 }
 

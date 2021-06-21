@@ -62,6 +62,12 @@ protected:
 	std::shared_ptr<Image> m_pBackgroundImage;
 	// 桌面最大化位置
 	CRect m_rcRestoreArea;
+	// 标题栏点击标记
+	bool htcaption_flag_;
+	// 客户区点击标记
+	bool clinet_hit_flag_;
+
+	CPoint now_mouse_point_;
 
 	// 初始按钮
 	int InitImageButton();
@@ -88,6 +94,12 @@ public:
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnNcLButtonDblClk(UINT nHitTest, CPoint point);
+	afx_msg void OnNcLButtonDown(UINT nHitTest, CPoint point);
+	afx_msg void OnNcLButtonUp(UINT nHitTest, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 
 	// 更新控件位置
 	void RefreshWidget();

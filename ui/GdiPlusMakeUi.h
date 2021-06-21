@@ -5,7 +5,13 @@
 #define PALY_GAME_USER_NUM			4
 
 // GDI+头文件
-#define ULONG_PTR ULONG 
+
+#ifdef _WIN64
+#define ULONG_PTR unsigned __int64
+#else
+#define ULONG_PTR ULONG
+#endif
+
 #include <gdiplus.h>
 using namespace Gdiplus;
 // 链接GDI+库
@@ -21,7 +27,6 @@ extern ULONG_PTR gdiplusTokenUi;
 
 // 绘制窗体外层矩形
 void DrawWindowRectUi(HDC & hdc, CRect rt);
-
 
 class CGdiPlusMakeUi
 {
