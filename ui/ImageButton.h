@@ -14,12 +14,16 @@ public:
 	Image * m_pDownImage;
 
 	HBRUSH m_hBackBrush;
-
 	BOOL m_MouseOnButton;
+	CDC m_dcBk;
+	CBitmap m_bmpBk;
+	CBitmap * m_pbmpOldBk;
+	BOOL m_bDrawTransparent;
 
 public:
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	// ªÊ÷∆ΩÁ√Ê
+	void PaintBackground(CDC* pDC);
 	void DrawButton(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);

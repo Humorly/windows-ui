@@ -225,10 +225,11 @@ void COwnerDrawWindowDlg::RefreshWidget()
 		if (NULL != m_pWidgitBtn[i])
 		{
 			m_pWidgitBtn[i]->MoveWindow(&rect, true);
+			m_pWidgitBtn[i]->Invalidate();
 		}
 	}
 
-	Invalidate();
+	//Invalidate();
 
 	//// 查找控件并刷新之
 	//HWND hWndChild = ::GetWindow(m_hWnd, GW_CHILD);
@@ -278,8 +279,8 @@ void COwnerDrawWindowDlg::DrawOwnerWindow()
 
 	// 根据状态绘制图片
 	RectF rRect(static_cast<Gdiplus::REAL>(rc.left), static_cast<Gdiplus::REAL>(rc.top), static_cast<Gdiplus::REAL>(rc.right - rc.left), static_cast<Gdiplus::REAL>(rc.bottom - rc.top));
-	if (m_pBackgroundImage)
-		pImageGraphics->DrawImage(m_pBackgroundImage.get(), rRect, 0, 0, static_cast<Gdiplus::REAL>(m_pBackgroundImage->GetWidth()), static_cast<Gdiplus::REAL>(m_pBackgroundImage->GetHeight()), UnitPixel);
+	//if (m_pBackgroundImage)
+	//	pImageGraphics->DrawImage(m_pBackgroundImage.get(), rRect, 0, 0, static_cast<Gdiplus::REAL>(m_pBackgroundImage->GetWidth()), static_cast<Gdiplus::REAL>(m_pBackgroundImage->GetHeight()), UnitPixel);
 
 	CRect rt;
 	rt = CRect(14, 8, 184, 36);

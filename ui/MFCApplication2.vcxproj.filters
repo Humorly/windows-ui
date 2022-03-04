@@ -33,9 +33,6 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CButtonST.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="GdiPlusMakeUi.h">
       <Filter>源文件</Filter>
     </ClInclude>
@@ -48,9 +45,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CButtonST.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="OwnerDrawWindowDlg.cpp">

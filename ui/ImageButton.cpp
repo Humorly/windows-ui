@@ -77,6 +77,8 @@ void CImageButton::DrawButton(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	RectF rRect(static_cast<Gdiplus::REAL>(rc.left), static_cast<Gdiplus::REAL>(rc.top), 
 		static_cast<Gdiplus::REAL>(rc.right - rc.left), static_cast<Gdiplus::REAL>(rc.bottom - rc.top));
 
+	PaintBackground(pdc);
+
 	// »æÖÆ
 	Image * pShowImage = NULL;
 	// ÞôÏÂ
@@ -93,6 +95,7 @@ void CImageButton::DrawButton(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	else
 	{
 		pShowImage = m_pNormalImage;
+		OutputDebugString(TEXT("restore"));
 	}
 	VERIFY(pShowImage);
 	pImageGraphics->DrawImage(pShowImage, rRect, 0, 0, static_cast<Gdiplus::REAL>(pShowImage->GetWidth()), static_cast<Gdiplus::REAL>(pShowImage->GetHeight()), UnitPixel);
@@ -104,6 +107,28 @@ void CImageButton::DrawButton(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	DeleteObject(lBitmap);
 	delete pImageGraphics;
 }
+
+void CImageButton::PaintBackground(CDC* pDC)
+{
+	CClientDC clDC(GetParent());
+	CRect rect;
+	CRect rect1;
+
+	GetClientRect(rect);
+
+	GetWindowRect(rect1);
+	GetParent()->ScreenToClient(rect1);
+
+	if (m_dcBk.m_hDC == NULL)
+	{
+		m_dcBk.CreateCompatibleDC(&clDC);
+		m_bmpBk.CreateCompatibleBitmap(&clDC, rect.Width(), rect.Height());
+		m_pbmpOldBk = m_dcBk.SelectObject(&m_bmpBk);
+		m_dcBk.BitBlt(0, 0, rect.Width(), rect.Height(), &clDC, rect1.left, rect1.top, SRCCOPY);
+	}
+
+	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &m_dcBk, 0, 0, SRCCOPY);
+} // End of PaintBk
 
 
 BEGIN_MESSAGE_MAP(CImageButton, CButton)
@@ -148,7 +173,7 @@ void CImageButton::OnMouseMove(UINT nFlags, CPoint point)
 			{
 				m_MouseOnButton = FALSE;
 				Invalidate();
-				(reinterpret_cast<COwnerDrawWindowDlg *>(GetParent()))->RefreshWidget();
+				//(reinterpret_cast<COwnerDrawWindowDlg *>(GetParent()))->RefreshWidget();
 			}
 			if (!(nFlags & MK_LBUTTON)) ReleaseCapture();
 		}

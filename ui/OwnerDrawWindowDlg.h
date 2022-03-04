@@ -102,7 +102,7 @@ public:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 
 	// 更新控件位置
-	void RefreshWidget();
+	virtual void RefreshWidget();
 
 	//  拼接完整路径
 	CString SplicFullFilePath(CString strExeModuleName);

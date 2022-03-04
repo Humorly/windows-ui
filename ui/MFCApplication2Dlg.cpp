@@ -56,6 +56,14 @@ CMFCApplication2Dlg::CMFCApplication2Dlg(CWnd* pParent /*=nullptr*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
+// 刷新控件
+void CMFCApplication2Dlg::RefreshWidget()
+{
+	COwnerDrawWindowDlg::RefreshWidget();
+	if (nullptr != test_btn_)
+		test_btn_->Invalidate();
+}
+
 void CMFCApplication2Dlg::DoDataExchange(CDataExchange* pDX)
 {
 	COwnerDrawWindowDlg::DoDataExchange(pDX);
@@ -100,8 +108,7 @@ BOOL CMFCApplication2Dlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
-	// TODO: 在此添加额外的初始化代码
-	static std::shared_ptr<CImageButton> test_btn_;
+	// 测试按钮
 	test_btn_.reset(new CImageButton());
 	test_btn_->SetButtonImage(SplicFullFilePath(PNG_TEST1), SplicFullFilePath(PNG_TEST2),
 		SplicFullFilePath(PNG_TEST3));
